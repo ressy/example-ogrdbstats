@@ -1,5 +1,9 @@
 RPKGFILE = $(CONDA_PREFIX)/lib/R/library/ogrdbstats/DESCRIPTION
 VERSION = 0.2.0
+SPECIES = Macacamulatta
+
+run: inf.VH.fasta IMGT_REF_GAPPED.fasta filtered.tab $(RPKGFILE)
+	Rscript ogrdbstats/ogrdbstats.R --inf_file $(word 1,$^) $(word 2,$^) $(SPECIES) $(word 3,$^) VH
 
 install: $(RPKGFILE)
 
@@ -8,9 +12,6 @@ $(RPKGFILE): ogrdbstats_$(VERSION).tar.gz
 
 ogrdbstats_$(VERSION).tar.gz:
 	wget https://github.com/airr-community/ogrdbstats/raw/master/$(notdir $@)
-
-run: inf.VH.fasta IMGT_REF_GAPPED.fasta filtered.tab $(RPKGFILE)
-	Rscript ogrdbstats/ogrdbstats.R --inf_file $(word 1,$^) $(word 2,$^) Macacamulatta $(word 3,$^) VH
 
 inf.VH.fasta: example-igdiscover/discovertest/final/filtered.tab.gz
 	cp $(dir $<)/database/V.fasta $@
