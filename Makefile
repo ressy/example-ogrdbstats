@@ -9,8 +9,8 @@ $(RPKGFILE): ogrdbstats_$(VERSION).tar.gz
 ogrdbstats_$(VERSION).tar.gz:
 	wget https://github.com/airr-community/ogrdbstats/raw/master/$(notdir $@)
 
-run: inf.VH.fasta IMGT_REF_GAPPED.fasta filtered.tab
-	Rscript ogrdbstats/ogrdbstats.R --inf_file $(word 1,$^) $(word 2,$^) $(word 3,$^) VH
+run: inf.VH.fasta IMGT_REF_GAPPED.fasta filtered.tab $(RPKGFILE)
+	Rscript ogrdbstats/ogrdbstats.R --inf_file $(word 1,$^) $(word 2,$^) Macacamulatta $(word 3,$^) VH
 
 inf.VH.fasta: example-igdiscover/discovertest/final/filtered.tab.gz
 	cp $(dir $<)/database/V.fasta $@
