@@ -1,0 +1,24 @@
+name: example-ogrdbstats
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  # ogrdbstats dependencies
+  - r=3
+  - r-tigger
+  - r-alakazam
+  - r-stringr
+  - r-gridExtra
+  - r-tidyr
+  - r-dplyr
+  - r-stringdist
+  - r-RColorBrewer
+  - r-argparser
+  - r-ggplot2
+  - bioconductor-biostrings
+  - bioconductor-ComplexHeatmap
+  # IgDiscover
+  - igdiscover
+  # other tools
+  - seqtk
