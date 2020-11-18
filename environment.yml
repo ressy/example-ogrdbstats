@@ -16,9 +16,6 @@ dependencies:
   - r-RColorBrewer
   - r-argparser
   - r-ggplot2
+  - r-knitr # needed to build R package from source
   - bioconductor-biostrings
   - bioconductor-ComplexHeatmap
-  # IgDiscover
-  - igdiscover
-  # other tools
-  - seqtk

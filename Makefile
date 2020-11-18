@@ -1,27 +1,32 @@
 RPKGFILE = $(CONDA_PREFIX)/lib/R/library/ogrdbstats/DESCRIPTION
 VERSION = 0.2.0
-SPECIES = Macacamulatta
+SPECIES = Homosapiens
+REF_URL = http://www.imgt.org/download/GENE-DB/IMGTGENEDB-ReferenceSequences.fasta-nt-WithGaps-F+ORF+inframeP
 
-run: inf.VH.fasta IMGT_REF_GAPPED.fasta filtered.tab $(RPKGFILE)
-	Rscript ogrdbstats/ogrdbstats.R --inf_file $(word 1,$^) $(word 2,$^) $(SPECIES) $(word 3,$^) VH
+run: filtered_ogrdb_report.csv
+
+filtered_ogrdb_report.csv: ogrdbstats/testdata/JH_igdiscover/J.fasta IMGT_REF_GAPPED.fasta ogrdbstats/testdata/JH_igdiscover/filtered.tab $(RPKGFILE)
+	Rscript ogrdbstats/ogrdbstats.R --inf_file $(word 1,$^) $(word 2,$^) $(SPECIES) $(word 3,$^) JH
 
 install: $(RPKGFILE)
 
 $(RPKGFILE): ogrdbstats_$(VERSION).tar.gz
 	R -e "install.packages('$<', repos=NULL, type='source')"
 
+# Version 0.2.0 crashes with the example IgDiscover JH files
+#ogrdbstats_$(VERSION).tar.gz:
+#	wget https://github.com/airr-community/ogrdbstats/raw/master/$(notdir $@)
 ogrdbstats_$(VERSION).tar.gz:
-	wget https://github.com/airr-community/ogrdbstats/raw/master/$(notdir $@)
-
-inf.VH.fasta: example-igdiscover/discovertest/final/filtered.tab.gz
-	cp $(dir $<)/database/V.fasta $@
-
-filtered.tab: example-igdiscover/discovertest/final/filtered.tab.gz
-	zcat $< > $@
+	R CMD build ogrdbstats
 
 IMGT_REF_GAPPED.fasta:
-	curl http://www.imgt.org/download/GENE-DB/IMGTGENEDB-ReferenceSequences.fasta-nt-WithGaps-F+ORF+inframeP | seqtk seq -l 0 > $@
+	curl $(REF_URL) > $@
 
-# OR: ogrdbstats/testdata
-example-igdiscover/discovertest/final/filtered.tab.gz:
-	cd example-igdiscover && make
+clean:
+	rm -f filtered.tab
+	rm -f filtered_ogrdb_plots.pdf
+	rm -f filtered_ogrdb_report.csv
+
+realclean: clean
+	rm -f ogrdbstats_*.tar.gz
+	rm -f *.fasta

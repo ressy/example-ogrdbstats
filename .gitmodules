@@ -1,6 +1,3 @@
 [submodule "ogrdbstats"]
 	path = ogrdbstats
 	url = git@github.com:airr-community/ogrdbstats.git
-[submodule "example-igdiscover"]
-	path = example-igdiscover
-	url = git@github.com:ressy/example-igdiscover.git
